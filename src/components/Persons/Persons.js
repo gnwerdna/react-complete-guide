@@ -37,6 +37,7 @@ class Persons extends React.Component {
         const person = (person, index) => {
             return (
                 <Person
+                    position={index}
                     name={person.name}
                     age={person.age}
                     key={person.id}

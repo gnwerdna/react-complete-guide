@@ -2,18 +2,19 @@ import React, { Component } from 'react';
 import Classes from './App.module.css';
 import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
-import WithClass from '../hoc/WithClass';
-
+import withClass from '../hoc/withClass';
+import Aux from '../hoc/Aux';
 class App extends Component {
   constructor(props) {
     super(props);
     this.state = {
       persons: [
-        { id: '1', name: 'Mark', age: '34' },
-        { id: '2', name: 'Bill', age: '63' },
-        { id: '3', name: 'Warrent', age: '88' }
+        { id: '1', name: 'Mark', age: 34 },
+        { id: '2', name: 'Bill', age: 63 },
+        { id: '3', name: 'Warrent', age: 88 }
       ],
-      isShow: false
+      isShow: false,
+      toggleClicked: 0
     }
     console.log('[App.js] inside constructor');
   }
@@ -32,8 +33,8 @@ class App extends Component {
   shouldComponentUpdate(nextProps, nextState) {
     console.log('[App.js] inside shouldComponentUpdate', nextProps, nextState);
     // performance gain for component
-    return nextState.persons !== this.state.persons || 
-          nextState.isShow !== this.state.isShow;
+    return nextState.persons !== this.state.persons ||
+      nextState.isShow !== this.state.isShow;
   }
 
   componentWillUpdate(nextProps, nextState) {
@@ -46,8 +47,11 @@ class App extends Component {
 
   togglePersonHandler = () => {
     const showTogglePerson = this.state.isShow;
-    this.setState({
-      isShow: !showTogglePerson
+    this.setState((prevState, props) => {
+      return {
+        isShow: !showTogglePerson,
+        toggleClicked: prevState.toggleClicked + 1
+      }
     })
   }
 
@@ -90,15 +94,15 @@ class App extends Component {
 
 
     return (
-      <WithClass classes={Classes.App}>
+      <Aux>
         <Cockpit
           isShow={this.state.isShow}
           persons={this.state.persons}
           clicked={this.togglePersonHandler} />
         {persons}
-      </WithClass>
+      </Aux>
     );
   }
 }
 
-export default App;
+export default withClass(App, Classes.App);
