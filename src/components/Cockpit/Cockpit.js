@@ -26,6 +26,8 @@ class Cockpit extends React.Component {
                 <button
                     onClick={this.props.clicked}
                     className={btnClass}>Toggle Person</button>
+                <button
+                    onClick={this.props.login}> Login </button>
             </Aux>
         )
     }

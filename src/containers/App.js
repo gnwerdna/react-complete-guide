@@ -4,6 +4,8 @@ import Persons from '../components/Persons/Persons';
 import Cockpit from '../components/Cockpit/Cockpit';
 import withClass from '../hoc/withClass';
 import Aux from '../hoc/Aux';
+
+// export const AuthContext = React.createContext(false);
 class App extends Component {
   constructor(props) {
     super(props);
@@ -14,7 +16,8 @@ class App extends Component {
         { id: '3', name: 'Warrent', age: 88 }
       ],
       isShow: false,
-      toggleClicked: 0
+      toggleClicked: 0,
+      authenticated: false
     }
     console.log('[App.js] inside constructor');
   }
@@ -32,7 +35,7 @@ class App extends Component {
 
   shouldComponentUpdate(nextProps, nextState) {
     console.log('[App.js] inside shouldComponentUpdate', nextProps, nextState);
-    // performance gain for component
+    // performance gain for component pure component
     return nextState.persons !== this.state.persons ||
       nextState.isShow !== this.state.isShow;
   }
@@ -76,29 +79,34 @@ class App extends Component {
     this.setState({
       persons: persons
     })
+  }
 
+  loginHandler = () => {
+    this.setState({
+      authenticated: true
+    });
   }
 
   render() {
     console.log('[App.js] inside render method');
     let persons = null;
 
-
     if (this.state.isShow) {
       persons = <Persons
         persons={this.state.persons}
         clicked={this.deletePersonHandler}
-        changed={this.changePersonHandler} />;
+        changed={this.changePersonHandler} 
+        isAuthenticated={this.state.authenticated}/>;
     }
-
-
 
     return (
       <Aux>
         <Cockpit
           isShow={this.state.isShow}
           persons={this.state.persons}
-          clicked={this.togglePersonHandler} />
+          clicked={this.togglePersonHandler}
+          login={this.loginHandler} />
+        {/* <AuthContext.Provider value={this.state.authenticated}>{persons}</AuthContext.Provider> */}
         {persons}
       </Aux>
     );

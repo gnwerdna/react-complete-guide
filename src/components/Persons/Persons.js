@@ -1,9 +1,10 @@
 import React from 'react';
 import Person from '../Persons/Person/Person';
-
+import {AuthContext} from '../../containers/App';
 class Persons extends React.Component {
     constructor(props) {
         super(props);
+        this.lastPersonRef = React.createRef();
     }
 
     componentWillMount() {
@@ -12,6 +13,7 @@ class Persons extends React.Component {
 
     componentDidMount() {
         console.log('[Persons.js] inside componentDidMount()');
+        this.lastPersonRef.current.focus();
     }
     componentWillReceiveProps(nextProps) {
         console.log('[Persons.js] inside componentWillReceiveProps', nextProps);
@@ -41,6 +43,8 @@ class Persons extends React.Component {
                     name={person.name}
                     age={person.age}
                     key={person.id}
+                    ref={this.lastPersonRef}
+                    authenticated={this.props.isAuthenticated}
                     click={() => this.props.clicked(index)}
                     changed={(event) => this.props.changed(event, person.id)}
                 />
